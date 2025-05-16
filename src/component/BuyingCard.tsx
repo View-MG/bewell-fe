@@ -29,22 +29,6 @@ export const BuyingProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const { productId, productName, category, price, imageUrl } = product;
 
-  const handleQuantityChange = (value: number | null) => {
-    if (value !== null) {
-      onChange({ quantity: value, discount: 0 }); // reset discount
-    }
-  };
-
-  const handleDiscountTypeChange = (value: string) => {
-    onChange({ discountType: value, discount: 0 }); // reset discount
-  };
-
-  const handleDiscountChange = (value: number | null) => {
-    if (value !== null) {
-      onChange({ discount: value });
-    }
-  };
-
   return (
     <div className="p-4 bg-white rounded-2xl shadow flex gap-4 items-start mb-3">
       <Image
@@ -66,14 +50,14 @@ export const BuyingProductCard: React.FC<ProductCardProps> = ({
             min={0}
             max={100}
             value={quantity}
-            onChange={handleQuantityChange}
+            onChange={(value) => onChange({ quantity: value ?? 0 })}
           />
           <div className="text-xs text-gray-600">ส่วนลด :</div>
           <Select
             size="small"
             style={{ width: 120 }}
             value={discountType}
-            onChange={handleDiscountTypeChange}
+            onChange={(value) => onChange({ discountType: value })}
             options={[
               { value: 'bath', label: 'บาท(฿)' },
               { value: 'percent', label: 'เปอร์เซ็นต์(%)' },
@@ -85,7 +69,7 @@ export const BuyingProductCard: React.FC<ProductCardProps> = ({
             min={0}
             max={discountType === "percent" ? 100 : 9999}
             value={discount}
-            onChange={handleDiscountChange}
+            onChange={(value) => onChange({ discount: value ?? 0 })}
           />
         </div>
       </div>

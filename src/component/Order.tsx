@@ -1,6 +1,6 @@
 "use client";
-import { useState } from "react";
-import { BuyingProductCard } from "./BuyingProductCard";
+import { useState, useEffect } from "react";
+import { BuyingProductCard } from "./BuyingCard";
 
 type Product = {
   no: number;
@@ -13,82 +13,62 @@ type Product = {
 };
 
 type OrderProps = {
-  items: Product[];
+  cartMap: Map<string, { product: Product; quantity: number }>;
+  onCartChange: (updatedCart: Map<string, { product: Product; quantity: number }>) => void;
 };
 
-type CartItem = {
-  product: Product;
-  quantity: number;
-  discount: number;
-  discountType: string;
-};
+export default function Order({ cartMap, onCartChange }: OrderProps) {
+  const [items, setItems] = useState(new Map<string, { product: Product; quantity: number }>(cartMap));
 
-export default function Order({ items }: OrderProps) {
-  const initialGrouped: { [productId: string]: CartItem } = {};
-
-  items.forEach((item) => {
-    if (initialGrouped[item.productId]) {
-      initialGrouped[item.productId].quantity += 1;
-    } else {
-      initialGrouped[item.productId] = {
-        product: item,
-        quantity: 1,
-        discount: 0,
-        discountType: "",
-      };
-    }
-  });
-
-  const [cartItems, setCartItems] = useState(initialGrouped);
+  useEffect(() => {
+    setItems(new Map(cartMap));
+  }, [cartMap]);
 
   const handleUpdate = (
-    productId: string,
-    updates: Partial<Pick<CartItem, "quantity" | "discount" | "discountType">>
-  ) => {
-    setCartItems((prev) => ({
-      ...prev,
-      [productId]: {
-        ...prev[productId],
-        ...updates,
-      },
-    }));
+  productId: string,
+  updates: Partial<{
+    quantity: number;
+    discount: number;
+    discountType: string;
+  }>
+) => {
+  const newItems = new Map(items);
+  const existing = newItems.get(productId);
+  if (!existing) return;
+
+  const updatedItem = {
+    ...existing,
+    ...updates,
   };
 
-  const subtotal = Object.values(cartItems).reduce(
-    (sum, { product, quantity }) => sum + product.price * quantity,
-    0
-  );
+  if (updatedItem.quantity > 0) {
+    newItems.set(productId, updatedItem);
+  } else {
+    newItems.delete(productId);
+  }
 
-  const totalDiscount = Object.values(cartItems).reduce((sum, { product, quantity, discount, discountType }) => {
-    if (discountType === "percent") {
-      return sum + (product.price * quantity * discount) / 100;
-    } else if (discountType === "bath") {
-      return sum + discount;
-    }
-    return sum;
-  }, 0);
-
-  const totalToPay = subtotal - totalDiscount;
+  setItems(newItems);
+  onCartChange(newItems);
+};
 
   return (
-    <div className="p-4 bg-white rounded shadow">
-      <h2 className="text-lg font-bold mb-4">รายการที่เลือก</h2>
-      {Object.entries(cartItems).map(([productId, item]) => (
+  <div className="p-4 bg-white rounded shadow">
+    <h2 className="text-lg font-bold mb-4">รายการที่เลือก</h2>
+
+    {items.size === 0 ? (
+      <div className="text-gray-500">ไม่มีรายการสินค้า</div>
+    ) : (
+      Array.from(items.entries()).map(([id, { product, quantity }]) => (
         <BuyingProductCard
-          key={productId}
-          product={item.product}
-          quantity={item.quantity}
-          discount={item.discount}
-          discountType={item.discountType}
-          onChange={(updates) => handleUpdate(productId, updates)}
+          key={id}
+          product={product}
+          quantity={quantity}
+          discount={0}
+          discountType="none"
+          onChange={(updates) => handleUpdate(id, updates)}
         />
-      ))}
-      {items.length === 0 && <div className="text-gray-500">ไม่มีรายการสินค้า</div>}
-      <div className="mt-4 border-t pt-4 text-sm space-y-1">
-        <div>รวมราคาสินค้าก่อนส่วนลด: <span className="font-medium">฿ {subtotal.toFixed(2)}</span></div>
-        <div>ส่วนลดทั้งหมด: <span className="font-medium text-red-600">-฿ {totalDiscount.toFixed(2)}</span></div>
-        <div className="text-base font-bold">ราคาสุทธิที่ต้องจ่าย: <span className="text-green-600">฿ {totalToPay.toFixed(2)}</span></div>
-      </div>
-    </div>
-  );
+      ))
+    )}
+  </div>
+);
 }
