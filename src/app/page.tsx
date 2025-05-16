@@ -1,9 +1,9 @@
 "use client"
 import { useEffect, useState } from "react";
-import { ProductCard } from "@/component/Card";
+import { ProductCard } from "@/components/card/Card";
 import { SearchOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
-import Order from "@/component/Order";
+import Order from "@/components/card/Order";
 
 type Product = {
   no: number;
