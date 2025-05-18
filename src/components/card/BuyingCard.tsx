@@ -1,34 +1,28 @@
 "use client";
 import Image from 'next/image';
-import { Select, InputNumber } from 'antd';
-
-type Product = {
-  no: number;
-  productId: string;
-  productName: string;
-  category: string;
-  price: number;
-  imageUrl: string;
-  stock: number;
-};
+import { InputNumber } from 'antd';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { DiscountDetail ,DiscountType } from "@/types/product";
 
 type ProductCardProps = {
-  product: Product;
-  quantity: number;
-  discount: number;
-  discountType: string;
-  onChange: (updates: Partial<{ quantity: number; discount: number; discountType: string }>) => void;
+  discountDetail : DiscountDetail
+  onChange: (updates: Partial<{ quantity: number; discount: number; discountType: DiscountType }>) => void;
 };
 
 export const BuyingProductCard: React.FC<ProductCardProps> = ({
-  product,
-  quantity,
-  discount,
-  discountType,
+  discountDetail,
   onChange,
 }) => {
-  const { productId, productName, category, price, imageUrl } = product;
-
+  const { productId, productName, category, price, imageUrl } = discountDetail.product;
+console.log("discountType before render:", discountDetail.discountType);
   return (
     <div className="p-4 bg-white rounded-2xl shadow flex gap-2 h-28 items-center justify-center">
       <Image
@@ -49,26 +43,31 @@ export const BuyingProductCard: React.FC<ProductCardProps> = ({
             style={{ width: 50 }}
             min={1}
             max={100}
-            value={quantity}
+            value={discountDetail.quantity}
             onChange={(value) => onChange({ quantity: value ?? 0 })}
           />
           <div className="text-xs text-gray-600">ส่วนลด:</div>
           <Select
-            size="small"
-            style={{ width: 100 }}
-            value={discountType}
-            onChange={(value) => onChange({ discountType: value })}
-            options={[
-              { value: 'bath', label: 'บาท(฿)' },
-              { value: 'percent', label: 'เปอร์เซ็นต์(%)' },
-            ]}
-          />
+            value={discountDetail.discountType}
+            onValueChange={(value) => {
+            onChange({ discountType: value as DiscountType })}}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Fruits</SelectLabel>
+                <SelectItem value={DiscountType.Baht}>บาท(฿)</SelectItem>
+                <SelectItem value={DiscountType.Percent}>เปอร์เซ็นต์(%)</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
           <InputNumber
             size="small"
             style={{ width: 80 }}
             min={0}
-            max={discountType === "percent" ? 100 : 9999}
-            value={discount}
+            max={discountDetail.discountType === DiscountType.Percent ? 100 : 99999}
+            value={discountDetail.discount}
             onChange={(value) => onChange({ discount: value ?? 0 })}
           />
         </div>

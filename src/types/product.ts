@@ -1,4 +1,4 @@
-type Product = {
+export type Product = {
     no: number;
     productId: string;
     productName: string;
@@ -7,3 +7,16 @@ type Product = {
     imageUrl: string;
     stock: number;
 }
+
+export enum DiscountType {
+  None = "none",
+  Baht = "bath",
+  Percent = "percent",
+}
+
+export type DiscountDetail = {
+    product: Product
+    quantity: number
+    discountType: DiscountType
+    discount: number
+  }

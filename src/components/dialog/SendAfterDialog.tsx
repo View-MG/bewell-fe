@@ -11,6 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
+import { Product } from "@/types/product";
 
 interface SendAfterDialogProps {
   product?: Product;
@@ -19,6 +20,7 @@ interface SendAfterDialogProps {
   onUpdate: (newQuantity: number) => void;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  status: boolean;
 }
 
 const schema = z.object({
@@ -30,6 +32,7 @@ export const SendAfterDialog: React.FC<SendAfterDialogProps> = ({
   onUpdate,
   isOpen,
   setIsOpen,
+  status,
 }) => {
   const form = useForm({
     resolver: zodResolver(schema),
@@ -48,9 +51,11 @@ export const SendAfterDialog: React.FC<SendAfterDialogProps> = ({
     <Dialog modal open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>แก้ไขจำนวนสินค้า</DialogTitle>
+          <DialogTitle>แก้ไขการส่งภายหลัง</DialogTitle>
           <DialogDescription>
-            ปรับจำนวนสินค้าที่ต้องการสั่งซื้อ แล้วกดบันทึก
+            {status
+              ? "คุณต้องการยกเลิกการส่งภายหลังใช่ไหม"
+              : "คุณต้องการส่งภายหลังใช่ไหม"}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>

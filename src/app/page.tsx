@@ -4,16 +4,7 @@ import { ProductCard } from "@/components/card/Card";
 import { SearchOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
 import Order from "@/components/card/Order";
-
-type Product = {
-  no: number;
-  productId: string;
-  productName: string;
-  category: string;
-  price: number;
-  imageUrl: string;
-  stock: number
-};
+import { Product, DiscountDetail, DiscountType } from "@/types/product";
 
 type ProductData = {
   success: boolean;
@@ -38,28 +29,30 @@ export default function Home() {
 
 
  //ตัวเก็บ Order ว่ามีอะไรอยู่ในตะกร้าบ้าง
-  const initialCartMap: Map<string, { product: Product; quantity: number }> = new Map();
+  const initialCartMap: Map<string, DiscountDetail> = new Map();
   const [cartMap, setCartMap] = useState(initialCartMap);
 
   //function เมื่อกดปุ่ม Add Cart ถ้ามี +1 ไม่มี set ให้ = 1
   const addToOrder = (product: Product) => {
-    setCartMap(prev => {
-      const newCart = new Map(prev);
-      const existing = newCart.get(product.productId);
-      if (existing) {
-        newCart.set(product.productId, {
-          product,
-          quantity: existing.quantity + 1,
-        });
-      } else {
-        newCart.set(product.productId, {
-          product,
-          quantity: 1,
-        });
-      }
-      return newCart;
-    });
-  };
+  setCartMap(prev => {
+    const newCart = new Map(prev);
+    const existing = newCart.get(product.productId);
+    if (existing) {
+      newCart.set(product.productId, {
+        ...existing,
+        quantity: existing.quantity + 1,
+      });
+    } else {
+      newCart.set(product.productId, {
+        product,
+        quantity: 1,
+        discountType: DiscountType.None,
+        discount: 0,
+      });
+    }
+    return newCart;
+  });
+};
   
   //สำหรับ Search
   const filteredProducts = products?.productList.filter((product) =>

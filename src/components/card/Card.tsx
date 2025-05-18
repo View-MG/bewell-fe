@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { CardButton } from "./CardButton";
 import { ShoppingCartOutlined } from '@ant-design/icons';
+import { Product } from "@/types/product";
 
 type ProductCardProps = {
   product: Product;

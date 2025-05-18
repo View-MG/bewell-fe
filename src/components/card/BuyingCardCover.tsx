@@ -20,6 +20,7 @@ export function BuyingCardCover({ children , onUpdate, onDelete, status }: CardC
               icon={<CheckOutlined />}
               size="small"
               className="w-[35px]W bg-[#e0e0e0] border-none hover:bg-green-500 transition-colors"
+              onClick={onUpdate}
             />
             <Button 
               danger
