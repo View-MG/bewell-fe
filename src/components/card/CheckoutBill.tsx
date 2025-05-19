@@ -66,7 +66,7 @@ export function CheckoutBill({items}: CheckoutBillProps){
             <Select
               onValueChange={(value : string) => {
               setNextBill(value as DiscountType)}}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-[100px]">
                 <SelectValue placeholder="" />
               </SelectTrigger>
               <SelectContent>
@@ -83,7 +83,7 @@ export function CheckoutBill({items}: CheckoutBillProps){
               max={nextBill === DiscountType.Percent ? 100 : undefined}
               value={nextBillDiscount}
               onChange={(e) => setNextBillDiscount(parseFloat(e.target.value) || 0)}
-              className="w-20"
+              className="w-16"
               placeholder="0"
             />
           </div>

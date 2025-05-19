@@ -66,18 +66,20 @@ export default function Home() {
 
   return (
     <main className="mx-auto flex w-full max-w-(--breakpoint-xl) flex-col justify-between gap-y-16 px-4 py-2 md:py-16 bg-gray-200">
-      <div className="grid grid-cols-9 gap-4">
-        <div className="flex w-full flex-wrap items-center justify-center col-span-5 gap-4 pt-4">
+      <div className="grid md:grid-cols-9 gap-4">
+        <div className="flex w-full flex-wrap items-center justify-center md:col-span-5 gap-4 pt-4 my-[400px] md:my-0">
         <Input size="large" placeholder="Search" prefix={<SearchOutlined />} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
         {isLoading ? (
           <h1>Loading...</h1>
         ) : (
-          filteredProducts?.map((product) => (
-            <ProductCard key={product.productId} product={product} addToOrder={addToOrder}/>
-          ))
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 md:grid-cols-2">
+            {filteredProducts?.map((product) => (
+              <ProductCard key={product.productId} product={product} addToOrder={addToOrder} />
+            ))}
+          </div>
         )}
         </div>
-        <div className="col-span-4">
+        <div className="fixed bottom-0 left-0 px-8 md:bg-transparent bg-gray-200 w-full bg- md:static md:col-span-4">
           <div className="flex flex-row">
             <LocalDateTime/>
           </div>

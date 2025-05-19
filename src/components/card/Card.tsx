@@ -2,6 +2,7 @@ import Image from "next/image";
 import { CardButton } from "./CardButton";
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { Product } from "@/types/product";
+import { NumericFormat } from 'react-number-format';
 
 type ProductCardProps = {
   product: Product;
@@ -10,7 +11,6 @@ type ProductCardProps = {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, addToOrder }) => {
   const { productId, productName, category, price, imageUrl } = product;
-
   return (
     <div className="w-[200px] h-[350px] shadow-lg rounded-lg bg-white flex flex-col p-3 relative">
       <div className="flex justify-center items-center bg-gray-100 rounded">
@@ -37,11 +37,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, addToOrder })
         </div>
       </div>
 
-      <div className="mt-auto text-right text-base font-semibold text-gray-900">
-        ฿ {price}
-      </div>
+      <NumericFormat className="mt-auto text-right text-base font-semibold text-gray-900" value={price} allowLeadingZeros thousandSeparator="," prefix="฿ " />
 
-      {/* Clickable Cart Icon */}
       <div className="absolute top-2 right-2 bg-white rounded-full p-1 shadow">
         <CardButton icon={<ShoppingCartOutlined />} tooltip="เพิ่มลงตะกร้า" onClick={() => addToOrder(product)}/>
       </div>
