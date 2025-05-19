@@ -5,7 +5,6 @@ import { BuyingCardCover } from "@/components/card/BuyingCardCover";
 import { DeleteDialog } from "@/components/dialog/DeleteDialog";
 import { SendAfterDialog } from "@/components/dialog/SendAfterDialog";
 import { DiscountDetail,DiscountType } from "@/types/product";
-import { CheckoutBill } from "./CheckoutBill";
 
 type OrderProps = {
   cartMap: Map<string, DiscountDetail>;
@@ -61,8 +60,6 @@ export default function Order({ cartMap, onCartChange }: OrderProps) {
 
   return (
     <div className="p-4 bg-white rounded shadow">
-      <h2 className="text-lg font-bold mb-4">รายการที่เลือก</h2>
-
       {items.size === 0 ? (
         <div className="text-gray-500">ไม่มีรายการสินค้า</div>
       ) : (
@@ -128,9 +125,6 @@ export default function Order({ cartMap, onCartChange }: OrderProps) {
           )}
         </div>
       )}
-      <div className="p-4 mt-4 rounded shadow">
-        <CheckoutBill items={items} />
-      </div>
     </div>
   );
 }

@@ -27,7 +27,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, addToOrder })
         <div className="text-sm font-medium text-gray-800 leading-tight break-words whitespace-normal">
           {productName}
         </div>
-        <div className="text-xs text-blue-600 underline">
+        <div className="text-xs text-gray-600">
           {productId}
         </div>
         <div className="mt-1">

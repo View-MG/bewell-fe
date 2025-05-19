@@ -5,6 +5,8 @@ import { SearchOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
 import Order from "@/components/card/Order";
 import { Product, DiscountDetail, DiscountType } from "@/types/product";
+import LocalDateTime from "@/components/card/Date";
+import { CheckoutBill } from "@/components/card/CheckoutBill";
 
 type ProductData = {
   success: boolean;
@@ -54,15 +56,18 @@ export default function Home() {
   });
 };
   
-  //สำหรับ Search
-  const filteredProducts = products?.productList.filter((product) =>
-    product.productName.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredProducts = products?.productList.filter((product) => {
+    const term = searchTerm.toLowerCase().trim();
+    return (
+      product.productName.toLowerCase().includes(term) ||
+      product.productId.toLowerCase().includes(term)
+    );
+  });
 
   return (
-    <main className="mx-auto flex w-full max-w-(--breakpoint-xl) flex-col justify-between gap-y-16 px-4 py-4 md:py-16 bg-gray-200">
+    <main className="mx-auto flex w-full max-w-(--breakpoint-xl) flex-col justify-between gap-y-16 px-4 py-2 md:py-16 bg-gray-200">
       <div className="grid grid-cols-9 gap-4">
-        <div className="flex w-full flex-wrap items-center justify-center col-span-5 gap-4">
+        <div className="flex w-full flex-wrap items-center justify-center col-span-5 gap-4 pt-4">
         <Input size="large" placeholder="Search" prefix={<SearchOutlined />} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
         {isLoading ? (
           <h1>Loading...</h1>
@@ -73,7 +78,13 @@ export default function Home() {
         )}
         </div>
         <div className="col-span-4">
+          <div className="flex flex-row">
+            <LocalDateTime/>
+          </div>
           <Order cartMap={cartMap} onCartChange={setCartMap} />
+          <div className="p-4 mt-4 rounded shadow bg-white">
+            <CheckoutBill items={cartMap} />
+          </div>
         </div>
       </div>
     </main>

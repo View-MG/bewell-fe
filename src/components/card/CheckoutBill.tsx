@@ -46,16 +46,16 @@ export function CheckoutBill({items}: CheckoutBillProps){
         <div className="mt-4 space-y-3 text-sm text-gray-700">
         <div className="flex items-center text-sm00">
           <div className="w-[80px]">ราคา</div>
-          <div className="flex-1 border-b border-dotted mx-3" />
+          <div className="flex-1 border-b border-dotted mx-3 border-gray-400" />
           <div className="w-[80px] text-center">{items.size} Item</div>
-          <div className="flex-1 border-b border-dotted mx-3" />
+          <div className="flex-1 border-b border-dotted mx-3 border-gray-400" />
           <div className="w-[100px] text-right">฿{totalPrice.toFixed(2)}</div>
         </div>
         <div className="flex items-center text-sm00">
           <div className="w-[80px]">รวม Vat 7%</div>
-          <div className="flex-1 border-b border-dotted mx-3" />
+          <div className="flex-1 border-b border-dotted mx-3 border-gray-400" />
           <div className="w-[80px] text-center">{items.size} Item</div>
-          <div className="flex-1 border-b border-dotted mx-3" />
+          <div className="flex-1 border-b border-dotted mx-3 border-gray-400" />
           <div className="w-[100px] text-right">฿{vatPrice.toFixed(2)}</div>
         </div>
 
@@ -91,7 +91,7 @@ export function CheckoutBill({items}: CheckoutBillProps){
 
         <div className="flex justify-between items-center">
           <span>แลกคะแนน</span>
-          <div className="flex-1 border-b border-dotted mx-3" />
+          <div className="flex-1 border-b border-dotted mx-3 border-gray-400" />
           <span>฿0</span>
         </div>
 
