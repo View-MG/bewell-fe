@@ -1,5 +1,11 @@
-import { Button, Tooltip } from 'antd';
-import React from 'react';
+import React from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface CartButtonProps {
   icon: React.ReactNode;
@@ -10,11 +16,26 @@ interface CartButtonProps {
 export const CardButton: React.FC<CartButtonProps> = ({
   icon,
   tooltip,
-  onClick
+  onClick,
 }) => {
   return (
-    <Tooltip title={tooltip}>
-      <Button shape="circle" icon={icon} onClick={onClick} />
-    </Tooltip>
+    <TooltipProvider>
+      <Tooltip delayDuration={200}>
+        <TooltipTrigger asChild>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={onClick}
+          >
+            {icon}
+          </Button>
+        </TooltipTrigger>
+        {tooltip && (
+          <TooltipContent side="top">
+            <p>{tooltip}</p>
+          </TooltipContent>
+        )}
+      </Tooltip>
+    </TooltipProvider>
   );
-}
+};
