@@ -26,6 +26,7 @@ export const CardButton: React.FC<CartButtonProps> = ({
             variant="outline"
             size="icon"
             onClick={onClick}
+            className="rounded-full"
           >
             {icon}
           </Button>

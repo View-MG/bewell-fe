@@ -9,19 +9,23 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input";
-import { DiscountType } from "@/types/product";
+import { DiscountDetail,DiscountType } from "@/types/product";
 
-export function CheckoutBill(){
+type CheckoutBillProps = {
+  items: Map<string, DiscountDetail>;
+};
+
+export function CheckoutBill({items}: CheckoutBillProps){
     let totalPrice = 0
-      let totalDiscount = 0
-      items.forEach(({ product, quantity, discount, discountType }) => {
-      const base = product.price * quantity
-      const discountAmount =
-        discountType === DiscountType.Percent ? (base * discount) / 100 : 
-        discountType === DiscountType.Baht ? discount : 0
-      totalPrice += base
-      totalDiscount += discountAmount
-      });
+    let totalDiscount = 0
+    items.forEach(({ product, quantity, discount, discountType }) => {
+    const base = product.price * quantity
+    const discountAmount =
+      discountType === DiscountType.Percent ? (base * discount) / 100 : 
+      discountType === DiscountType.Baht ? discount : 0
+    totalPrice += base
+    totalDiscount += discountAmount
+    });
       
     const beforeFinalPrice = totalPrice - totalDiscount
     const vatPrice = beforeFinalPrice * 0.07
@@ -67,7 +71,7 @@ export function CheckoutBill(){
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Fruits</SelectLabel>
+                  <SelectLabel>Select Your Discount</SelectLabel>
                   <SelectItem value={DiscountType.Baht}>บาท(฿)</SelectItem>
                   <SelectItem value={DiscountType.Percent}>เปอร์เซ็นต์(%)</SelectItem>
                 </SelectGroup>

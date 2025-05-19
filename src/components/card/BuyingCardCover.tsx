@@ -25,18 +25,19 @@ export function BuyingCardCover({
             <div className="text-xs text-center">ส่งหลัง</div>
             <Button
               variant="outline"
-              size="icon"
-              className="bg-gray-200 hover:bg-green-500 border-none"
+              size="sm"
+              className="hover:bg-gray-200 bg-green-500 border-none h-6"
               onClick={onUpdate}
             >
-              <Check className="h-4 w-4" />
+              <Check className="h-4 w-4 text-white" />
             </Button>
             <Button
               variant="destructive"
-              size="icon"
+              size="sm"
               onClick={onDelete}
+              className="h-6 hover:bg-gray-200"
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-4 w-4 text-white" />
             </Button>
           </div>
         ) : (
@@ -44,24 +45,26 @@ export function BuyingCardCover({
             <div className="text-xs text-center">ส่งหลัง</div>
             <Button
               variant="outline"
-              size="icon"
+              size="sm"
               disabled
-              className="bg-gray-200 border-none"
+              className="bg-gray-200 border-none h-6 w-6"
             >
             </Button>
             <Button
+              className="h-6"
               variant="outline"
-              size="icon"
+              size="sm"
               onClick={onUpdate}
             >
               <Edit className="h-4 w-4" />
             </Button>
             <Button
+              className="h-6 hover:bg-gray-200"
               variant="destructive"
-              size="icon"
+              size="sm"
               onClick={onDelete}
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-4 w-4 text-white" />
             </Button>
           </div>
         )}

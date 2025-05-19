@@ -1,5 +1,6 @@
 import {
   AlertDialog,
+  AlertDialogOverlay,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
@@ -22,6 +23,7 @@ export function DeleteDialog({
 }: DeleteDialogProps) {
   return (
     <AlertDialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <AlertDialogOverlay className="fixed inset-0 bg-black/30" />
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure?</AlertDialogTitle>

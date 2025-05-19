@@ -40,31 +40,34 @@ console.log("discountType before render:", discountDetail.discountType);
           <div className="text-base font-bold">฿{price}</div>
           <InputNumber
             size="small"
-            style={{ width: 50 }}
+            style={{ width: 40 }}
             min={1}
             max={100}
             value={discountDetail.quantity}
             onChange={(value) => onChange({ quantity: value ?? 0 })}
           />
           <div className="text-xs text-gray-600">ส่วนลด:</div>
-          <Select
+          <div className="text-xs w-32">
+            <Select
             value={discountDetail.discountType}
             onValueChange={(value) => {
             onChange({ discountType: value as DiscountType })}}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger size="sm">
               <SelectValue placeholder="" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Fruits</SelectLabel>
+                <SelectLabel><Select> Your Discount</Select></SelectLabel>
                 <SelectItem value={DiscountType.Baht}>บาท(฿)</SelectItem>
                 <SelectItem value={DiscountType.Percent}>เปอร์เซ็นต์(%)</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
+          </div>
+          
           <InputNumber
             size="small"
-            style={{ width: 80 }}
+            style={{ width: 50 }}
             min={0}
             max={discountDetail.discountType === DiscountType.Percent ? 100 : 99999}
             value={discountDetail.discount}

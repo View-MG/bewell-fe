@@ -12,7 +12,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, addToOrder })
   const { productId, productName, category, price, imageUrl } = product;
 
   return (
-    <div className="w-[250px] h-[400px] shadow-lg rounded-lg bg-white flex flex-col p-3 relative">
+    <div className="w-[200px] h-[350px] shadow-lg rounded-lg bg-white flex flex-col p-3 relative">
       <div className="flex justify-center items-center bg-gray-100 rounded">
         <Image
           src={imageUrl}
@@ -24,7 +24,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, addToOrder })
       </div>
 
       <div className="mt-3 flex flex-col gap-1">
-        <div className="text-sm font-medium text-gray-800 leading-tight line-clamp-2">
+        <div className="text-sm font-medium text-gray-800 leading-tight break-words whitespace-normal">
           {productName}
         </div>
         <div className="text-xs text-blue-600 underline">

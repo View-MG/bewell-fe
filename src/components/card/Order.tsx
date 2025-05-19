@@ -5,6 +5,7 @@ import { BuyingCardCover } from "@/components/card/BuyingCardCover";
 import { DeleteDialog } from "@/components/dialog/DeleteDialog";
 import { SendAfterDialog } from "@/components/dialog/SendAfterDialog";
 import { DiscountDetail,DiscountType } from "@/types/product";
+import { CheckoutBill } from "./CheckoutBill";
 
 type OrderProps = {
   cartMap: Map<string, DiscountDetail>;
@@ -65,71 +66,71 @@ export default function Order({ cartMap, onCartChange }: OrderProps) {
       {items.size === 0 ? (
         <div className="text-gray-500">ไม่มีรายการสินค้า</div>
       ) : (
-        Array.from(items.entries()).map(([id, { product, quantity, discountType, discount }]) => (
-          <BuyingCardCover
-            key={id}
-            onDelete={() => setSelectedProductIdForDelete(id)}
-            onUpdate={() => {
-              setSelectedProductIdForEdit(id);
-              setIsSendAfterDialogOpen(true);
-            }}
-            status={sendAfterItems.has(id)}
-          >
-            <BuyingProductCard
-              key={id}
-              discountDetail={{
-                product,
-                quantity,
-                discount: discount,
-                discountType: discountType
-              }}
-              onChange={(updates) => handleUpdate(id, updates)}
-            />
-            <DeleteDialog
-              isOpen={selectedProductIdForDelete !== null}
-              onClose={() => setSelectedProductIdForDelete(null)}
-              onDelete={() => {
-                if (selectedProductIdForDelete) {
-                  handleUpdate(selectedProductIdForDelete, { quantity: 0 });
-                  setSendAfterItems(prev => {
-                    const newSet = new Set(prev);
-                    if (newSet.has(id)) {
-                      newSet.delete(selectedProductIdForDelete);
-                    }
-                    return newSet;
-                  });
-                  setSelectedProductIdForDelete(null);
-                }
-              }}
-            />
-            {selectedProductIdForEdit === id && (
-              <SendAfterDialog
-                isOpen={isSendAfterDialogOpen}
-                setIsOpen={setIsSendAfterDialogOpen}
-                product={product}
-                quantity={quantity}
-                onUpdate={(newQuantity) => {
-                  handleUpdate(id, { quantity: newQuantity });
-
-                  setSendAfterItems(prev => {
-                    const newSet = new Set(prev);
-                    if (newSet.has(id)) {
-                      newSet.delete(id);
-                    } else {
-                      newSet.add(id);
-                    }
-                    return newSet;
-                  });
-
-                  setIsSendAfterDialogOpen(false);
+        <div className="max-h-96 overflow-y-auto space-y-4">
+          {Array.from(items.entries()).map(
+            ([id, { product, quantity, discountType, discount }]) => (
+              <BuyingCardCover
+                key={id}
+                onDelete={() => setSelectedProductIdForDelete(id)}
+                onUpdate={() => {
+                  setSelectedProductIdForEdit(id);
+                  setIsSendAfterDialogOpen(true);
                 }}
                 status={sendAfterItems.has(id)}
-              />
-            )}
-          </BuyingCardCover>
-        ))
+              >
+                <BuyingProductCard
+                  discountDetail={{
+                    product,
+                    quantity,
+                    discount,
+                    discountType,
+                  }}
+                  onChange={(updates) => handleUpdate(id, updates)}
+                />
+                <DeleteDialog
+                  isOpen={selectedProductIdForDelete !== null}
+                  onClose={() => setSelectedProductIdForDelete(null)}
+                  onDelete={() => {
+                    if (selectedProductIdForDelete) {
+                      handleUpdate(selectedProductIdForDelete, { quantity: 0 });
+                      setSendAfterItems((prev) => {
+                        const newSet = new Set(prev);
+                        if (newSet.has(id)) {
+                          newSet.delete(selectedProductIdForDelete);
+                        }
+                        return newSet;
+                      });
+                      setSelectedProductIdForDelete(null);
+                    }
+                  }}
+                />
+                {selectedProductIdForEdit === id && (
+                  <SendAfterDialog
+                    isOpen={isSendAfterDialogOpen}
+                    setIsOpen={setIsSendAfterDialogOpen}
+                    product={product}
+                    quantity={quantity}
+                    onUpdate={(newQuantity) => {
+                      handleUpdate(id, { quantity: newQuantity });
+                      setSendAfterItems((prev) => {
+                        const newSet = new Set(prev);
+                        if (newSet.has(id)) newSet.delete(id);
+                        else newSet.add(id);
+                        return newSet;
+                      });
+                      setIsSendAfterDialogOpen(false);
+                    }}
+                    status={sendAfterItems.has(id)}
+                  />
+                )}
+              </BuyingCardCover>
+            )
+          )}
+        </div>
       )}
-      
+      <div className="p-4 mt-4 rounded shadow">
+        <CheckoutBill items={items} />
+      </div>
     </div>
   );
 }

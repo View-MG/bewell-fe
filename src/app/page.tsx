@@ -61,8 +61,8 @@ export default function Home() {
 
   return (
     <main className="mx-auto flex w-full max-w-(--breakpoint-xl) flex-col justify-between gap-y-16 px-4 py-4 md:py-16 bg-gray-200">
-      <div className="grid grid-cols-2 gap-4">
-        <div className="flex w-full flex-wrap items-center justify-center col-span-1 gap-4">
+      <div className="grid grid-cols-9 gap-4">
+        <div className="flex w-full flex-wrap items-center justify-center col-span-5 gap-4">
         <Input size="large" placeholder="Search" prefix={<SearchOutlined />} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
         {isLoading ? (
           <h1>Loading...</h1>
@@ -72,7 +72,7 @@ export default function Home() {
           ))
         )}
         </div>
-        <div className="col-span-1">
+        <div className="col-span-4">
           <Order cartMap={cartMap} onCartChange={setCartMap} />
         </div>
       </div>
