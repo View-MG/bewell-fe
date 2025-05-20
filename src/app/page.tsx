@@ -1,12 +1,13 @@
 "use client"
 import { useEffect, useState } from "react";
 import { ProductCard } from "@/components/card/Card";
-import { SearchOutlined } from '@ant-design/icons';
-import { Input } from 'antd';
+import { Input,Button } from 'antd';
 import Order from "@/components/card/Order";
 import { Product, DiscountDetail, DiscountType } from "@/types/product";
 import LocalDateTime from "@/components/card/Date";
 import { CheckoutBill } from "@/components/card/CheckoutBill";
+import { SearchOutlined, CloseOutlined, ShoppingCartOutlined } from '@ant-design/icons';
+
 
 type ProductData = {
   success: boolean;
@@ -33,6 +34,7 @@ export default function Home() {
  //ตัวเก็บ Order ว่ามีอะไรอยู่ในตะกร้าบ้าง
   const initialCartMap: Map<string, DiscountDetail> = new Map();
   const [cartMap, setCartMap] = useState(initialCartMap);
+  const [isOrderOpen, setIsOrderOpen] = useState(true);
 
   //function เมื่อกดปุ่ม Add Cart ถ้ามี +1 ไม่มี set ให้ = 1
   const addToOrder = (product: Product) => {
@@ -79,15 +81,34 @@ export default function Home() {
           </div>
         )}
         </div>
-        <div className="fixed bottom-0 left-0 px-8 md:bg-transparent bg-gray-200 w-full bg- md:static md:col-span-4">
-          <div className="flex flex-row">
-            <LocalDateTime/>
-          </div>
-          <Order cartMap={cartMap} onCartChange={setCartMap} />
-          <div className="p-4 mt-4 rounded shadow bg-white">
-            <CheckoutBill items={cartMap} />
-          </div>
-        </div>
+        {
+          isOrderOpen ? (
+          <div className="fixed bottom-0 left-0 px-8 md:px-0 md:bg-transparent bg-gray-200 w-full bg- md:static md:col-span-4">
+            <div className="flex flex-row">
+              <LocalDateTime/>
+              <div className="ml-auto md:hidden">
+                <Button
+                  type="text"
+                  icon={isOrderOpen ? <CloseOutlined /> : <ShoppingCartOutlined />}
+                  onClick={() => setIsOrderOpen(open => !open)}
+                />
+              </div>
+            </div>
+            <Order cartMap={cartMap} onCartChange={setCartMap} />
+            <div className="p-4 mt-4 rounded shadow bg-white">
+              <CheckoutBill items={cartMap} />
+            </div>
+          </div>) : (
+          <div className="mx-auto fixed bottom-4 right-4 z-50">
+            <Button
+              type="text"
+              className="rounded-full"
+              icon={isOrderOpen ? <CloseOutlined /> : <ShoppingCartOutlined />}
+              onClick={() => setIsOrderOpen(open => !open)}
+            />
+          </div>)
+        }
+        
       </div>
     </main>
   );
